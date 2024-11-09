@@ -7,6 +7,8 @@
       #version 300 es
 
       in vec4 aPosition;
+      in vec4 aColor;
+      out vec4 vColor;
 
       uniform mat4 modelViewMatrix;
       uniform mat4 projectionMatrix;
@@ -14,6 +16,7 @@
       void main()
       {
           gl_Position = projectionMatrix * modelViewMatrix * aPosition;
+          vColor = aColor;
       }
     </script>
 
@@ -23,17 +26,19 @@
       precision mediump float;
 
       out vec4 fColor;
+      in vec4 vColor;
 
       void main()
       {
-          fColor = vec4(1.0, 0.0, 0.0, 1.0);
-
+          fColor = vColor;
       }
     </script>
 
     <script src="initShaders.js"></script>
     <script src="MVnew.js"></script>
     <script src="shapes.js"></script>
+    <script src="topologi.js"></script>
+    <script src="nodes.js"></script>
     <script src="figure.js"></script>
   </body>
 </html>
