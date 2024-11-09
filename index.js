@@ -36,6 +36,23 @@ for (var i = 0; i < numNodes; i++)
 var vBuffer;
 var modelViewLoc;
 
+// lighting
+
+function configureTexture(image) {
+  var texture = gl.createTexture();
+  gl.bindTexture(gl.TEXTURE_2D, texture);
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, image);
+  gl.generateMipmap(gl.TEXTURE_2D);
+  gl.texParameteri(
+    gl.TEXTURE_2D,
+    gl.TEXTURE_MIN_FILTER,
+    gl.NEAREST_MIPMAP_LINEAR,
+  );
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+
+  gl.uniform1i(gl.getUniformLocation(program, "uTexMap"), 0);
+}
+
 init();
 
 function traverse(Id) {
@@ -68,6 +85,13 @@ function init() {
   (projectionMatrixLoc = gl.getUniformLocation(program, "projectionMatrix")),
     (modelViewMatrixLoc = gl.getUniformLocation(program, "modelViewMatrix"));
 
+  var image = new Image();
+  image.onload = function () {
+    configureTexture(image);
+  };
+  image.src = "skin.jpg";
+
+  configureTexture(image);
   for (i = 0; i < numNodes; i++) initNodes(i);
   render();
 }
@@ -88,14 +112,22 @@ function createBuffer() {
   var colorLoc = gl.getAttribLocation(program, "aColor");
   gl.vertexAttribPointer(colorLoc, 4, gl.FLOAT, false, 0, 0);
   gl.enableVertexAttribArray(colorLoc);
+
+  var tBuffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, tBuffer);
+  gl.bufferData(gl.ARRAY_BUFFER, flatten(texCoordsArray), gl.STATIC_DRAW);
+
+  var texCoordLoc = gl.getAttribLocation(program, "aTexCoord");
+  gl.vertexAttribPointer(texCoordLoc, 2, gl.FLOAT, false, 0, 0);
+  gl.enableVertexAttribArray(texCoordLoc);
 }
 
 function render() {
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
   Transformer();
-  theta[torsoId] += 3;
+  theta[leftLowerLegId] += 3;
 
-  initNodes(torsoId);
+  initNodes(leftLowerLegId);
 
   traverse(torsoId);
   requestAnimationFrame(render);

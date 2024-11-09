@@ -1,10 +1,13 @@
 var red = vec4(1, 0, 0, 1);
-var green = vec4(0, 1, 0, 1);
+var brown = vec4(0.82, 0.71, 0.55, 0.5);
 var black = vec4(0, 0, 0, 1);
+var blue = vec4(0, 0, 1, 1);
 var pointsArray = [];
 var colors = [];
+var texCoord = [vec2(0, 0), vec2(0, 1), vec2(1, 1), vec2(1, 0)];
+var texCoordsArray = [vec2(0, 0)];
 
-function createCube() {
+function createCube(col) {
   var vertices = [
     vec4(-0.5, -0.5, 0.5, 1.0),
     vec4(-0.5, 0.5, 0.5, 1.0),
@@ -17,23 +20,57 @@ function createCube() {
   ];
   pointsArray = [];
   colors = [];
-  quad(1, 0, 3, 2, vertices);
-  quad(2, 3, 7, 6, vertices);
-  quad(3, 0, 4, 7, vertices);
-  quad(6, 5, 1, 2, vertices);
-  quad(4, 5, 6, 7, vertices);
-  quad(5, 4, 0, 1, vertices);
+  texCoordsArray = [];
+  quad(1, 0, 3, 2, vertices, col);
+  quad(2, 3, 7, 6, vertices, col);
+  quad(3, 0, 4, 7, vertices, col);
+  quad(6, 5, 1, 2, vertices, col);
+  quad(4, 5, 6, 7, vertices, col);
+  quad(5, 4, 0, 1, vertices, col);
 }
 
-function quad(a, b, c, d, vertices) {
+// function quad(a, b, c, d, vertices) {
+//   pointsArray.push(vertices[a]);
+//   colors.push(black);
+//   texCoordsArray.push(texCoord[0]);
+
+//   pointsArray.push(vertices[b]);
+//   colors.push(black);
+//   texCoordsArray.push(texCoord[1]);
+
+//   pointsArray.push(vertices[c]);
+//   colors.push(black);
+//   texCoordsArray.push(texCoord[2]);
+
+//   pointsArray.push(vertices[d]);
+//   colors.push(black);
+//   texCoordsArray.push(texCoord[0]);
+// }
+
+function quad(a, b, c, d, vertices, col) {
   pointsArray.push(vertices[a]);
-  colors.push(black);
+  colors.push(col);
+  texCoordsArray.push(texCoord[0]);
+
   pointsArray.push(vertices[b]);
-  colors.push(black);
+  colors.push(col);
+  texCoordsArray.push(texCoord[1]);
+
   pointsArray.push(vertices[c]);
-  colors.push(black);
+  colors.push(col);
+  texCoordsArray.push(texCoord[2]);
+
+  pointsArray.push(vertices[a]);
+  colors.push(col);
+  texCoordsArray.push(texCoord[0]);
+
+  pointsArray.push(vertices[c]);
+  colors.push(col);
+  texCoordsArray.push(texCoord[2]);
+
   pointsArray.push(vertices[d]);
-  colors.push(black);
+  colors.push(col);
+  texCoordsArray.push(texCoord[3]);
 }
 
 function createCylinder(col) {

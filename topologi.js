@@ -17,7 +17,7 @@ var handHeight = 1.3;
 var armLegTranslate = 1.2;
 
 function torso(gl, modelViewMatrixLoc, modelViewMatrix) {
-  createCylinder(black);
+  createCylinder(blue);
   createBuffer();
   var instanceMatrix = mult(
     modelViewMatrix,
@@ -33,7 +33,7 @@ function torso(gl, modelViewMatrixLoc, modelViewMatrix) {
 }
 
 function head(gl, modelViewMatrixLoc, modelViewMatrix) {
-  createSphere(black, 0.5);
+  createSphere(brown, 0.5);
   createBuffer();
   var instanceMatrix = mult(
     modelViewMatrix,
@@ -49,7 +49,7 @@ function head(gl, modelViewMatrixLoc, modelViewMatrix) {
 }
 
 function leftUpperArm(gl, modelViewMatrixLoc, modelViewMatrix) {
-  createCube();
+  createCube(blue);
   createBuffer();
   var instanceMatrix = mult(
     modelViewMatrix,
@@ -65,7 +65,7 @@ function leftUpperArm(gl, modelViewMatrixLoc, modelViewMatrix) {
 }
 
 function leftLowerArm(gl, modelViewMatrixLoc, modelViewMatrix) {
-  createCube();
+  createCube(brown);
   createBuffer();
   var instanceMatrix = mult(
     modelViewMatrix,
@@ -81,7 +81,7 @@ function leftLowerArm(gl, modelViewMatrixLoc, modelViewMatrix) {
 }
 
 function rightUpperArm(gl, modelViewMatrixLoc, modelViewMatrix) {
-  createCube();
+  createCube(blue);
   createBuffer();
   var instanceMatrix = mult(
     modelViewMatrix,
@@ -97,7 +97,7 @@ function rightUpperArm(gl, modelViewMatrixLoc, modelViewMatrix) {
 }
 
 function rightLowerArm(gl, modelViewMatrixLoc, modelViewMatrix) {
-  createCube();
+  createCube(brown);
   createBuffer();
   var instanceMatrix = mult(
     modelViewMatrix,
@@ -113,7 +113,7 @@ function rightLowerArm(gl, modelViewMatrixLoc, modelViewMatrix) {
 }
 
 function leftUpperLeg(gl, modelViewMatrixLoc, modelViewMatrix) {
-  createCube();
+  createCube(black);
   createBuffer();
   var instanceMatrix = mult(
     modelViewMatrix,
@@ -129,7 +129,7 @@ function leftUpperLeg(gl, modelViewMatrixLoc, modelViewMatrix) {
 }
 
 function leftHand(gl, modelViewMatrixLoc, modelViewMatrix) {
-  createSphere(black);
+  createSphere(brown);
   createBuffer();
   var instanceMatrix = mult(
     modelViewMatrix,
@@ -146,7 +146,7 @@ function leftHand(gl, modelViewMatrixLoc, modelViewMatrix) {
 }
 
 function rightHand(gl, modelViewMatrixLoc, modelViewMatrix) {
-  createSphere(black);
+  createSphere(brown);
   createBuffer();
   var instanceMatrix = mult(
     modelViewMatrix,
@@ -162,7 +162,7 @@ function rightHand(gl, modelViewMatrixLoc, modelViewMatrix) {
 }
 
 function leftLowerLeg(gl, modelViewMatrixLoc, modelViewMatrix) {
-  createCube();
+  createCube(brown);
   createBuffer();
   var instanceMatrix = mult(
     modelViewMatrix,
@@ -178,7 +178,7 @@ function leftLowerLeg(gl, modelViewMatrixLoc, modelViewMatrix) {
 }
 
 function rightUpperLeg(gl, modelViewMatrixLoc, modelViewMatrix) {
-  createCube();
+  createCube(black);
   createBuffer();
   var instanceMatrix = mult(
     modelViewMatrix,
@@ -194,7 +194,7 @@ function rightUpperLeg(gl, modelViewMatrixLoc, modelViewMatrix) {
 }
 
 function rightLowerLeg(gl, modelViewMatrixLoc, modelViewMatrix) {
-  createCube();
+  createCube(brown);
   createBuffer();
   var instanceMatrix = mult(
     modelViewMatrix,
@@ -209,23 +209,8 @@ function rightLowerLeg(gl, modelViewMatrixLoc, modelViewMatrix) {
     gl.drawArrays(gl.TRIANGLE_FAN, 4 * i, numPositions);
 }
 
-function rightLowerLeg(gl, modelViewMatrixLoc, modelViewMatrix) {
-  createCube();
-  createBuffer();
-  var instanceMatrix = mult(
-    modelViewMatrix,
-    translate(-armLegTranslate, 0.5 * lowerLegHeight, 0.0),
-  );
-  instanceMatrix = mult(
-    instanceMatrix,
-    scale(lowerLegWidth, lowerLegHeight, lowerLegWidth),
-  );
-  gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(instanceMatrix));
-  for (var i = 0; i < 6; i++)
-    gl.drawArrays(gl.TRIANGLE_FAN, 4 * i, numPositions);
-}
 function rightFoot(gl, modelViewMatrixLoc, modelViewMatrix) {
-  createCube(black);
+  createCube(brown);
   createBuffer();
   var instanceMatrix = mult(
     modelViewMatrix,
@@ -240,8 +225,10 @@ function rightFoot(gl, modelViewMatrixLoc, modelViewMatrix) {
     gl.drawArrays(gl.TRIANGLE_FAN, 4 * i, numPositions);
 }
 
+// }
+
 function leftFoot(gl, modelViewMatrixLoc, modelViewMatrix) {
-  createCube(black);
+  createCube(brown);
   createBuffer();
   var instanceMatrix = mult(
     modelViewMatrix,
