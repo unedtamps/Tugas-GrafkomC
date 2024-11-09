@@ -36,9 +36,6 @@ for (var i = 0; i < numNodes; i++)
 var vBuffer;
 var modelViewLoc;
 
-var pointsArray = [];
-var colors = [vec4(1.0, 0.0, 0.0, 1.0)];
-
 init();
 
 function traverse(Id) {
@@ -96,9 +93,9 @@ function createBuffer() {
 function render() {
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
   Transformer();
-  // theta[rightUpperLegId] += 3;
+  theta[torsoId] += 3;
 
-  // initNodes(rightUpperLegId);
+  initNodes(torsoId);
 
   traverse(torsoId);
   requestAnimationFrame(render);

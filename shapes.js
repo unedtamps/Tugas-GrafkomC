@@ -1,5 +1,8 @@
 var red = vec4(1, 0, 0, 1);
 var green = vec4(0, 1, 0, 1);
+var black = vec4(0, 0, 0, 1);
+var pointsArray = [];
+var colors = [];
 
 function createCube() {
   var vertices = [
@@ -13,6 +16,7 @@ function createCube() {
     vec4(0.5, -0.5, -0.5, 1.0),
   ];
   pointsArray = [];
+  colors = [];
   quad(1, 0, 3, 2, vertices);
   quad(2, 3, 7, 6, vertices);
   quad(3, 0, 4, 7, vertices);
@@ -23,17 +27,18 @@ function createCube() {
 
 function quad(a, b, c, d, vertices) {
   pointsArray.push(vertices[a]);
-  colors.push(red);
+  colors.push(black);
   pointsArray.push(vertices[b]);
-  colors.push(red);
+  colors.push(black);
   pointsArray.push(vertices[c]);
-  colors.push(red);
+  colors.push(black);
   pointsArray.push(vertices[d]);
-  colors.push(red);
+  colors.push(black);
 }
 
-function createCylinder() {
+function createCylinder(col) {
   pointsArray = [];
+  colors = [];
   var CYLINDER_DIV = 40; // Lower divisions to make debugging easier
   var i, ai, si, ci;
   var vertices = [],
@@ -118,12 +123,13 @@ function createCylinder() {
   for (let i = 0; i < indices.length; i++) {
     const index = indices[i];
     pointsArray.push(vertices[index]);
-    colors.push(red);
+    colors.push(col);
   }
 }
 
-function createSphere() {
+function createSphere(col) {
   pointsArray = [];
+  colors = [];
   var SPHERE_DIV = 40; // Lower divisions to make debugging easier
   var i, ai, si, ci;
   var j, aj, sj, cj;
@@ -201,14 +207,14 @@ function createSphere() {
     .sort((a, b) => a.sort - b.sort)
     .map(({ value }) => value);
 
-  let colors = [];
+  colors = [];
   const colorChangeInterval = indices.length / 2;
 
   for (let i = 0; i < indices.length; i++) {
     const index = indices[i];
     pointsArray.push(vertices[index]);
-    const colorIndex =
-      Math.floor(i / colorChangeInterval) % vertexColors.length;
-    colors.push(vertexColors[colorIndex]);
+    // const colorIndex =
+    //   Math.floor(i / colorChangeInterval) % vertexColors.length;
+    colors.push(col);
   }
 }
