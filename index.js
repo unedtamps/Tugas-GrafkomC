@@ -23,8 +23,6 @@ var numNodes = 15;
 var numAngles = 11;
 var angle = 0;
 
-// var theta = [0, 0, 0, 0, 0, 0, 180, 0, 180, 0, 0];
-
 var numVertices = 24;
 
 var stack = [];
@@ -38,13 +36,35 @@ var vBuffer;
 var modelViewLoc;
 
 var lightPosition = vec4(0.5, 0.5, 0, 0.0);
-var lightAmbient = vec4(0.3, 0.4, 0.2, 1.0);
-var lightDiffuse = vec4(1.0, 1.0, 1.0, 1.0);
+var lightAmbient = vec4(0.3, 0.4, 1.0, 1.0); // Neutral ambient lighting
+var lightDiffuse = vec4(0.2, 1, 1, 1.0);
 var lightSpecular = vec4(1.0, 1.0, 1.0, 1.0);
 var materialAmbient = vec4(1.0, 0.0, 1.0, 1.0);
-var materialDiffuse = vec4(1.0, 0.8, 0.0, 1.0);
+var materialDiffuse = vec4(1.0, 0.8, 1.0, 1.0);
 var materialSpecular = vec4(1.0, 1.0, 1.0, 1.0);
 var materialShininess = 20.0;
+
+// var lightPosition = vec4(0.5, 0.5, 0.5, 0.0); // Slightly repositioned to emphasize lighting
+// var lightAmbient = vec4(0.5, 0.5, 0.5, 1.0); // Increased ambient light for general illumination
+// var lightDiffuse = vec4(1, 1.5, 1.5, 1.0); // Increased diffuse for stronger directional lighting
+// var lightSpecular = vec4(1.2, 1.2, 1.6, 1.0); // Increased specular for a brighter reflection
+
+// var materialAmbient = vec4(1.0, 0.0, 1.0, 1.0); // Material properties unchanged
+// var materialDiffuse = vec4(1.0, 0.8, 0.0, 1.0);
+// var materialSpecular = vec4(1.0, 1.0, 1.0, 1.0);
+// var materialShininess = 20.0;
+
+// Light settings
+// var lightPosition = vec4(0.5, 0.5, 0.5, 0.0); // Keep light positioned to accentuate texture
+// var lightAmbient = vec4(1, 1, 1, 1.0); // Neutral ambient lighting
+// var lightDiffuse = vec4(1.0, 1.0, 1.0, 1.0); // White diffuse light to avoid color shift
+// var lightSpecular = vec4(1.0, 1.0, 1.0, 1.0); // White specular light
+
+// // Material settings
+// var materialAmbient = vec4(0.5, 0.25, 0.1, 1.0); // Match base brown tone in ambient lighting
+// var materialDiffuse = vec4(0.6, 0.3, 0.15, 1.0); // Match base brown tone in diffuse lighting
+// var materialSpecular = vec4(1.0, 1.0, 1.0, 1.0); // Keep high specular for brightness without color
+// var materialShininess = 20.0;
 
 var ambientProduct = mult(lightAmbient, materialAmbient);
 var diffuseProduct = mult(lightDiffuse, materialDiffuse);

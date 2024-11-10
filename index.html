@@ -30,7 +30,6 @@
       {
           vec3 pos = (modelViewMatrix *aPosition).xyz;
 
-          // check for directional light
 
           if(uLightPosition.w == 0.0) L = normalize(uLightPosition.xyz);
           else L = normalize( uLightPosition.xyz - pos );
@@ -82,8 +81,7 @@
         if( dot(L, N) < 0.0 ) specular = vec4(0.0, 0.0, 0.0, 1.0);
           //fColor = vColor;
 
-        fColor = vColor * (ambient + diffuse +specular) * texture(uTextureMap,vTexCoord) ;
-        //fColor = vec4(abs(N), 1.0);
+        fColor = texture(uTextureMap,vTexCoord) * vColor * (ambient + diffuse+specular);      //fColor = vec4(abs(N), 1.0);
       }
     </script>
 

@@ -2,19 +2,19 @@ var torsoHeight = 5.0;
 var torsoWidth = 2.0;
 var upperArmHeight = 3.0;
 var lowerArmHeight = 2.0;
-var upperArmWidth = 0.8;
+var upperArmWidth = 1;
 var lowerArmWidth = 0.8;
-var upperLegWidth = 0.8;
+var upperLegWidth = 1;
 var lowerLegWidth = 0.8;
-var lowerLegHeight = 2.0;
-var upperLegHeight = 3.0;
+var lowerLegHeight = 3.0;
+var upperLegHeight = 2.0;
 var footHeight = 1.2;
 var footWidht = 1.2;
 var headHeight = 2.0;
 var headWidth = 2.0;
 var handWidth = 1.3;
 var handHeight = 1.3;
-var armLegTranslate = 1.2;
+var armLegTranslate = 1.5;
 
 function torso(gl, modelViewMatrixLoc, modelViewMatrix) {
   createCylinder(blue);
@@ -210,11 +210,11 @@ function rightLowerLeg(gl, modelViewMatrixLoc, modelViewMatrix) {
 }
 
 function rightFoot(gl, modelViewMatrixLoc, modelViewMatrix) {
-  createCube(brown);
+  createCube(blue);
   createBuffer();
   var instanceMatrix = mult(
     modelViewMatrix,
-    translate(-armLegTranslate, 0.5 * footHeight, 0.0),
+    translate(-armLegTranslate, 1 * footHeight, 0.0),
   );
   instanceMatrix = mult(
     instanceMatrix,
@@ -228,11 +228,11 @@ function rightFoot(gl, modelViewMatrixLoc, modelViewMatrix) {
 // }
 
 function leftFoot(gl, modelViewMatrixLoc, modelViewMatrix) {
-  createCube(brown);
+  createCube(blue);
   createBuffer();
   var instanceMatrix = mult(
     modelViewMatrix,
-    translate(armLegTranslate, 0.5 * footHeight, 0.0),
+    translate(armLegTranslate, 1 * footHeight, 0.0),
   );
   instanceMatrix = mult(
     instanceMatrix,
