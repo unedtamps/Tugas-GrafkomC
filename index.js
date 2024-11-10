@@ -9,12 +9,13 @@ var projectionMatrix;
 var modelViewMatrix;
 var modelViewMatrixLoc;
 var projectionMatrixLoc;
+var nMatrix, nMatrixLoc;
 
 // projection
 var phi = 0;
 var radius = 40;
 var near = 4.0;
-var far = 100;
+var far = 50;
 var fovy = 45;
 var aspect;
 
@@ -35,6 +36,25 @@ for (var i = 0; i < numNodes; i++)
 
 var vBuffer;
 var modelViewLoc;
+
+var lightPosition = vec4(0.5, 0.5, 0, 0.0);
+var lightAmbient = vec4(0.3, 0.4, 0.2, 1.0);
+var lightDiffuse = vec4(1.0, 1.0, 1.0, 1.0);
+var lightSpecular = vec4(1.0, 1.0, 1.0, 1.0);
+var materialAmbient = vec4(1.0, 0.0, 1.0, 1.0);
+var materialDiffuse = vec4(1.0, 0.8, 0.0, 1.0);
+var materialSpecular = vec4(1.0, 1.0, 1.0, 1.0);
+var materialShininess = 20.0;
+
+var ambientProduct = mult(lightAmbient, materialAmbient);
+var diffuseProduct = mult(lightDiffuse, materialDiffuse);
+var specularProduct = mult(lightSpecular, materialSpecular);
+
+var ambientProductLoc;
+var diffuseProductLoc;
+var uSpecularProductLoc;
+var uLightPositionLoc;
+var materialShininessLoc;
 
 // lighting
 
@@ -82,8 +102,22 @@ function init() {
 
   gl.useProgram(program);
 
+  nMatrixLoc = gl.getUniformLocation(program, "uNormalMatrix");
+
   (projectionMatrixLoc = gl.getUniformLocation(program, "projectionMatrix")),
     (modelViewMatrixLoc = gl.getUniformLocation(program, "modelViewMatrix"));
+
+  ambientProductLoc = gl.getUniformLocation(program, "uAmbientProduct");
+  diffuseProductLoc = gl.getUniformLocation(program, "uDiffuseProduct");
+  uSpecularProductLoc = gl.getUniformLocation(program, "uSpecularProduct");
+  uLightPositionLoc = gl.getUniformLocation(program, "uLightPosition");
+  materialShininessLoc = gl.getUniformLocation(program, "uShininess");
+
+  gl.uniform4fv(ambientProductLoc, flatten(ambientProduct));
+  gl.uniform4fv(diffuseProductLoc, flatten(diffuseProduct));
+  gl.uniform4fv(uSpecularProductLoc, flatten(specularProduct));
+  gl.uniform4fv(uLightPositionLoc, flatten(lightPosition));
+  gl.uniform1f(materialShininessLoc, materialShininess);
 
   var image = new Image();
   image.onload = function () {
@@ -97,13 +131,9 @@ function init() {
 }
 
 function createBuffer() {
-  vBuffer = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, vBuffer);
-  gl.bufferData(gl.ARRAY_BUFFER, flatten(pointsArray), gl.STATIC_DRAW);
-
-  var positionLoc = gl.getAttribLocation(program, "aPosition");
-  gl.vertexAttribPointer(positionLoc, 4, gl.FLOAT, false, 0, 0);
-  gl.enableVertexAttribArray(positionLoc);
+  var nBuffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, nBuffer);
+  gl.bufferData(gl.ARRAY_BUFFER, flatten(normalsArray), gl.STATIC_DRAW);
 
   var colBuffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, colBuffer);
@@ -112,6 +142,18 @@ function createBuffer() {
   var colorLoc = gl.getAttribLocation(program, "aColor");
   gl.vertexAttribPointer(colorLoc, 4, gl.FLOAT, false, 0, 0);
   gl.enableVertexAttribArray(colorLoc);
+
+  vBuffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, vBuffer);
+  gl.bufferData(gl.ARRAY_BUFFER, flatten(pointsArray), gl.STATIC_DRAW);
+
+  var aNormalLoc = gl.getAttribLocation(program, "aNormal");
+  gl.vertexAttribPointer(aNormalLoc, 4, gl.FLOAT, false, 0, 0);
+  gl.enableVertexAttribArray(aNormalLoc);
+
+  var positionLoc = gl.getAttribLocation(program, "aPosition");
+  gl.vertexAttribPointer(positionLoc, 4, gl.FLOAT, false, 0, 0);
+  gl.enableVertexAttribArray(positionLoc);
 
   var tBuffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, tBuffer);
@@ -125,9 +167,9 @@ function createBuffer() {
 function render() {
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
   Transformer();
-  theta[leftLowerLegId] += 3;
+  theta[torsoId] += 3;
 
-  initNodes(leftLowerLegId);
+  initNodes(torsoId);
 
   traverse(torsoId);
   requestAnimationFrame(render);
@@ -145,4 +187,9 @@ function Transformer() {
   projectionMatrix = perspective(fovy, aspect, near, far);
   gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
   gl.uniformMatrix4fv(projectionMatrixLoc, false, flatten(projectionMatrix));
+
+  // nMatrix = normalMatrix(modelViewMatrix, true);
+  // gl.uniformMatrix3fv(nMatrixLoc, false, flatten(nMatrix));
+  nMatrix = normalMatrix(modelViewMatrix, true);
+  gl.uniformMatrix3fv(nMatrixLoc, false, flatten(nMatrix));
 }

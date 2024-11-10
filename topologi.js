@@ -33,7 +33,7 @@ function torso(gl, modelViewMatrixLoc, modelViewMatrix) {
 }
 
 function head(gl, modelViewMatrixLoc, modelViewMatrix) {
-  createSphere(brown, 0.5);
+  createSphere(brown);
   createBuffer();
   var instanceMatrix = mult(
     modelViewMatrix,
