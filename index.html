@@ -79,9 +79,9 @@
         vec4  specular = Ks * uSpecularProduct;
 
         if( dot(L, N) < 0.0 ) specular = vec4(0.0, 0.0, 0.0, 1.0);
-          //fColor = vColor;
+          fColor = vColor;
 
-        fColor = texture(uTextureMap,vTexCoord) * texture(uTextureMap, vec2(s,t)) * vColor * (ambient + diffuse+specular);      //fColor = vec4(abs(N), 1.0);
+        fColor = texture(uTextureMap,vTexCoord) * texture(uTextureMap, vec2(s,t)) * (ambient +  diffuse+ specular) * vColor ;      //fColor = vec4(abs(N), 1.0);
       }
     </script>
 

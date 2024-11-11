@@ -35,14 +35,24 @@ for (var i = 0; i < numNodes; i++)
 var vBuffer;
 var modelViewLoc;
 
+// var lightPosition = vec4(0.5, 0.5, 0, 0.0);
+// var lightAmbient = vec4(0.3, 0.4, 1.0, 1.0); // Neutral ambient lighting
+// var lightDiffuse = vec4(0.2, 1, 1, 1.0);
+// var lightSpecular = vec4(1.0, 1.0, 1.0, 1.0);
+// var materialAmbient = vec4(1.0, 0.0, 1.0, 1.0);
+// var materialDiffuse = vec4(1.0, 0.8, 1.0, 1.0);
+// var materialSpecular = vec4(1.0, 1.0, 1.0, 1.0);
+// var materialShininess = 20.0;
+
 var lightPosition = vec4(0.5, 0.5, 0, 0.0);
-var lightAmbient = vec4(0.3, 0.4, 1.0, 1.0); // Neutral ambient lighting
-var lightDiffuse = vec4(0.2, 1, 1, 1.0);
-var lightSpecular = vec4(1.0, 1.0, 1.0, 1.0);
-var materialAmbient = vec4(1.0, 0.0, 1.0, 1.0);
-var materialDiffuse = vec4(1.0, 0.8, 1.0, 1.0);
+var lightAmbient = vec4(0.3, 0.3, 0.5, 1.0); // Neutral ambient lighting (gray)
+var lightDiffuse = vec4(0.7, 0.7, 0.7, 1.0); // Neutral diffuse lighting (gray)
+var lightSpecular = vec4(0.9, 0.9, 0.9, 1.0); // Bright specular lighting (white)
+
+var materialAmbient = vec4(1.0, 1.0, 1.0, 1.0); // Use white to preserve texture color
+var materialDiffuse = vec4(1.0, 1.0, 1.0, 1.0);
 var materialSpecular = vec4(1.0, 1.0, 1.0, 1.0);
-var materialShininess = 20.0;
+var materialShininess = 50.0;
 
 var ambientProduct = mult(lightAmbient, materialAmbient);
 var diffuseProduct = mult(lightDiffuse, materialDiffuse);
@@ -71,7 +81,7 @@ function configureTexture(image) {
   );
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
 
-  gl.uniform1i(gl.getUniformLocation(program, "uTexMap"), 0);
+  return texture;
 }
 
 init();
@@ -120,9 +130,7 @@ function init() {
   gl.uniform4fv(uLightPositionLoc, flatten(lightPosition));
   gl.uniform1f(materialShininessLoc, materialShininess);
 
-  image.onload = function () {
-    configureTexture(image);
-  };
+  var image = new Image();
   image.src = "skin.jpg";
   configureTexture(image);
   for (i = 0; i < numNodes; i++) initNodes(i);

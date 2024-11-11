@@ -17,7 +17,14 @@ var handHeight = 1.3;
 var ballHeight = 3.2;
 var ballWidth = 3.2;
 var armLegTranslate = 1.5;
-var image = new Image();
+
+function imageTex(imageName) {
+  var newImage = new Image();
+  newImage.src = imageName;
+  configureTexture(newImage);
+  // gl.bindTexture(gl.TEXTURE_2D, tx); // Bind the specific texture
+  // gl.uniform1i(gl.getUniformLocation(program, "uTexMap"), 0);
+}
 
 function torso(gl, modelViewMatrixLoc, modelViewMatrix) {
   createCylinder(blue);
@@ -165,8 +172,9 @@ function rightHand(gl, modelViewMatrixLoc, modelViewMatrix) {
 }
 
 function ballNode(gl, modelViewMatrixLoc, modelViewMatrix) {
-  createSphere(blue);
+  createSphere(white);
   createBuffer();
+  imageTex("basketball.jpg");
   var instanceMatrix = mult(
     modelViewMatrix,
     translate(-armLegTranslate, -0.2, 0.0),
@@ -178,6 +186,8 @@ function ballNode(gl, modelViewMatrixLoc, modelViewMatrix) {
   gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(instanceMatrix));
   for (var i = 0; i < 6; i++)
     gl.drawArrays(gl.TRIANGLE_FAN, 4 * i, numPositions);
+
+  imageTex("skin.jpg");
 }
 
 function leftLowerLeg(gl, modelViewMatrixLoc, modelViewMatrix) {
