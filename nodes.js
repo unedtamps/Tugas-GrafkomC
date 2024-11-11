@@ -14,8 +14,9 @@ var rightHandId = 11;
 var leftHandId = 12;
 var leftFootId = 13;
 var rightFootId = 14;
+var ballId = 15;
 
-var theta = [0, 0, 0, 0, 0, 0, 180, 0, 180, 0, 0, 0, 0, 0, 0];
+var theta = [0, 0, 0, 0, 0, 0, 180, 0, 180, 0, 0, 0, 0, 0, 0, 0];
 
 function createNode(transform, render, sibling, child) {
   var node = {
@@ -105,13 +106,19 @@ function initNodes(Id) {
     case rightHandId:
       m = translate(0.0, handHeight, 0.0);
       m = mult(m, rotate(theta[rightHandId], vec3(1, 0, 0)));
-      figure[rightHandId] = createNode(m, rightHand, null, null);
+      figure[rightHandId] = createNode(m, rightHand, null, ballId);
       break;
 
     case leftHandId:
       m = translate(0.0, handHeight, 0.0);
       m = mult(m, rotate(theta[leftHandId], vec3(1, 0, 0)));
       figure[leftHandId] = createNode(m, leftHand, null, null);
+      break;
+
+    case ballId:
+      m = translate(0.0, ballHeight, 0.0);
+      m = mult(m, rotate(theta[ballId], vec3(1, 0, 0)));
+      figure[ballId] = createNode(m, ballNode, null, null);
       break;
 
     case rightFootId:

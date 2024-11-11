@@ -14,7 +14,10 @@ var headHeight = 2.0;
 var headWidth = 2.0;
 var handWidth = 1.3;
 var handHeight = 1.3;
+var ballHeight = 3.2;
+var ballWidth = 3.2;
 var armLegTranslate = 1.5;
+var image = new Image();
 
 function torso(gl, modelViewMatrixLoc, modelViewMatrix) {
   createCylinder(blue);
@@ -155,6 +158,22 @@ function rightHand(gl, modelViewMatrixLoc, modelViewMatrix) {
   instanceMatrix = mult(
     instanceMatrix,
     scale(handWidth, handHeight, handWidth),
+  );
+  gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(instanceMatrix));
+  for (var i = 0; i < 6; i++)
+    gl.drawArrays(gl.TRIANGLE_FAN, 4 * i, numPositions);
+}
+
+function ballNode(gl, modelViewMatrixLoc, modelViewMatrix) {
+  createSphere(blue);
+  createBuffer();
+  var instanceMatrix = mult(
+    modelViewMatrix,
+    translate(-armLegTranslate, -0.2, 0.0),
+  );
+  instanceMatrix = mult(
+    instanceMatrix,
+    scale(ballWidth, ballHeight, ballWidth),
   );
   gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(instanceMatrix));
   for (var i = 0; i < 6; i++)

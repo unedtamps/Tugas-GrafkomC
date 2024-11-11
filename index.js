@@ -19,7 +19,7 @@ var far = 50;
 var fovy = 45;
 var aspect;
 
-var numNodes = 15;
+var numNodes = 16;
 var numAngles = 11;
 var angle = 0;
 
@@ -44,28 +44,6 @@ var materialDiffuse = vec4(1.0, 0.8, 1.0, 1.0);
 var materialSpecular = vec4(1.0, 1.0, 1.0, 1.0);
 var materialShininess = 20.0;
 
-// var lightPosition = vec4(0.5, 0.5, 0.5, 0.0); // Slightly repositioned to emphasize lighting
-// var lightAmbient = vec4(0.5, 0.5, 0.5, 1.0); // Increased ambient light for general illumination
-// var lightDiffuse = vec4(1, 1.5, 1.5, 1.0); // Increased diffuse for stronger directional lighting
-// var lightSpecular = vec4(1.2, 1.2, 1.6, 1.0); // Increased specular for a brighter reflection
-
-// var materialAmbient = vec4(1.0, 0.0, 1.0, 1.0); // Material properties unchanged
-// var materialDiffuse = vec4(1.0, 0.8, 0.0, 1.0);
-// var materialSpecular = vec4(1.0, 1.0, 1.0, 1.0);
-// var materialShininess = 20.0;
-
-// Light settings
-// var lightPosition = vec4(0.5, 0.5, 0.5, 0.0); // Keep light positioned to accentuate texture
-// var lightAmbient = vec4(1, 1, 1, 1.0); // Neutral ambient lighting
-// var lightDiffuse = vec4(1.0, 1.0, 1.0, 1.0); // White diffuse light to avoid color shift
-// var lightSpecular = vec4(1.0, 1.0, 1.0, 1.0); // White specular light
-
-// // Material settings
-// var materialAmbient = vec4(0.5, 0.25, 0.1, 1.0); // Match base brown tone in ambient lighting
-// var materialDiffuse = vec4(0.6, 0.3, 0.15, 1.0); // Match base brown tone in diffuse lighting
-// var materialSpecular = vec4(1.0, 1.0, 1.0, 1.0); // Keep high specular for brightness without color
-// var materialShininess = 20.0;
-
 var ambientProduct = mult(lightAmbient, materialAmbient);
 var diffuseProduct = mult(lightDiffuse, materialDiffuse);
 var specularProduct = mult(lightSpecular, materialSpecular);
@@ -83,12 +61,15 @@ function configureTexture(image) {
   gl.bindTexture(gl.TEXTURE_2D, texture);
   gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, image);
   gl.generateMipmap(gl.TEXTURE_2D);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+  // Use linear filtering to make sure the texture scales smoothly
   gl.texParameteri(
     gl.TEXTURE_2D,
     gl.TEXTURE_MIN_FILTER,
-    gl.NEAREST_MIPMAP_LINEAR,
+    gl.LINEAR_MIPMAP_LINEAR,
   );
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
 
   gl.uniform1i(gl.getUniformLocation(program, "uTexMap"), 0);
 }
@@ -139,12 +120,10 @@ function init() {
   gl.uniform4fv(uLightPositionLoc, flatten(lightPosition));
   gl.uniform1f(materialShininessLoc, materialShininess);
 
-  var image = new Image();
   image.onload = function () {
     configureTexture(image);
   };
   image.src = "skin.jpg";
-
   configureTexture(image);
   for (i = 0; i < numNodes; i++) initNodes(i);
   render();
