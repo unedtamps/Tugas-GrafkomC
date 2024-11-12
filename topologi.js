@@ -174,7 +174,7 @@ function rightHand(gl, modelViewMatrixLoc, modelViewMatrix) {
 function ballNode(gl, modelViewMatrixLoc, modelViewMatrix) {
   createSphere(white);
   createBuffer();
-  imageTex("basketball.jpg");
+  imageTex("ball.jpg");
   var instanceMatrix = mult(
     modelViewMatrix,
     translate(-armLegTranslate, -0.2, 0.0),
