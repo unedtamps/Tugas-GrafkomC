@@ -159,14 +159,12 @@ function createBuffer() {
 function render() {
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
   Transformer();
-
-  // theta[torsoId] += 4;
-  // initNodes(torsoId);
-
-  theta[rightUpperArmId] += 4;
-  initNodes(rightUpperArmId);
+  rightArmRotate();
+  torsoRotae();
+  ballMove();
 
   traverse(torsoId);
+  // traverse(ballId);
   requestAnimationFrame(render);
 }
 

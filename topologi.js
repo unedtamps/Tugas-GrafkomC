@@ -16,14 +16,12 @@ var handWidth = 1.3;
 var handHeight = 1.3;
 var ballHeight = 3.2;
 var ballWidth = 3.2;
-var armLegTranslate = 1.5;
+var armLegTranslate = 1.6;
 
 function imageTex(imageName) {
   var newImage = new Image();
   newImage.src = imageName;
   configureTexture(newImage);
-  // gl.bindTexture(gl.TEXTURE_2D, tx); // Bind the specific texture
-  // gl.uniform1i(gl.getUniformLocation(program, "uTexMap"), 0);
 }
 
 function torso(gl, modelViewMatrixLoc, modelViewMatrix) {
@@ -63,7 +61,7 @@ function leftUpperArm(gl, modelViewMatrixLoc, modelViewMatrix) {
   createBuffer();
   var instanceMatrix = mult(
     modelViewMatrix,
-    translate(armLegTranslate, 0.5 * upperArmHeight, 0.0),
+    translate(0, 0.5 * upperArmHeight, 0.0),
   );
   instanceMatrix = mult(
     instanceMatrix,
@@ -79,7 +77,7 @@ function leftLowerArm(gl, modelViewMatrixLoc, modelViewMatrix) {
   createBuffer();
   var instanceMatrix = mult(
     modelViewMatrix,
-    translate(armLegTranslate, 0.5 * lowerArmHeight, 0.0),
+    translate(0, 0.5 * lowerArmHeight, 0.0),
   );
   instanceMatrix = mult(
     instanceMatrix,
@@ -111,7 +109,7 @@ function rightLowerArm(gl, modelViewMatrixLoc, modelViewMatrix) {
   createBuffer();
   var instanceMatrix = mult(
     modelViewMatrix,
-    translate(-armLegTranslate, 0.5 * lowerArmHeight, 0.0),
+    translate(0, 0.5 * lowerArmHeight, 0.0),
   );
   instanceMatrix = mult(
     instanceMatrix,
@@ -127,7 +125,7 @@ function leftUpperLeg(gl, modelViewMatrixLoc, modelViewMatrix) {
   createBuffer();
   var instanceMatrix = mult(
     modelViewMatrix,
-    translate(armLegTranslate, 0.5 * upperLegHeight, 0.0),
+    translate(0, 0.5 * upperLegHeight, 0.0),
   );
   instanceMatrix = mult(
     instanceMatrix,
@@ -143,7 +141,7 @@ function leftHand(gl, modelViewMatrixLoc, modelViewMatrix) {
   createBuffer();
   var instanceMatrix = mult(
     modelViewMatrix,
-    translate(armLegTranslate, 0.5 * handHeight, 0.0),
+    translate(0, 0.5 * handHeight, 0.0),
   );
   instanceMatrix = mult(
     instanceMatrix,
@@ -160,7 +158,7 @@ function rightHand(gl, modelViewMatrixLoc, modelViewMatrix) {
   createBuffer();
   var instanceMatrix = mult(
     modelViewMatrix,
-    translate(-armLegTranslate, 0.5 * handHeight, 0.0),
+    translate(0, 0.5 * handHeight, 0.0),
   );
   instanceMatrix = mult(
     instanceMatrix,
@@ -175,10 +173,7 @@ function ballNode(gl, modelViewMatrixLoc, modelViewMatrix) {
   createSphere(white);
   createBuffer();
   imageTex("ball.jpg");
-  var instanceMatrix = mult(
-    modelViewMatrix,
-    translate(-armLegTranslate, -0.2, 0.0),
-  );
+  var instanceMatrix = mult(modelViewMatrix, translate(0, 0, 0.0));
   instanceMatrix = mult(
     instanceMatrix,
     scale(ballWidth, ballHeight, ballWidth),
@@ -195,7 +190,7 @@ function leftLowerLeg(gl, modelViewMatrixLoc, modelViewMatrix) {
   createBuffer();
   var instanceMatrix = mult(
     modelViewMatrix,
-    translate(armLegTranslate, 0.5 * lowerLegHeight, 0.0),
+    translate(0, 0.5 * lowerLegHeight, 0.0),
   );
   instanceMatrix = mult(
     instanceMatrix,
@@ -211,7 +206,7 @@ function rightUpperLeg(gl, modelViewMatrixLoc, modelViewMatrix) {
   createBuffer();
   var instanceMatrix = mult(
     modelViewMatrix,
-    translate(-armLegTranslate, 0.5 * upperLegHeight, 0.0),
+    translate(0, 0.5 * upperLegHeight, 0.0),
   );
   instanceMatrix = mult(
     instanceMatrix,
@@ -227,7 +222,7 @@ function rightLowerLeg(gl, modelViewMatrixLoc, modelViewMatrix) {
   createBuffer();
   var instanceMatrix = mult(
     modelViewMatrix,
-    translate(-armLegTranslate, 0.5 * lowerLegHeight, 0.0),
+    translate(0, 0.5 * lowerLegHeight, 0.0),
   );
   instanceMatrix = mult(
     instanceMatrix,
@@ -241,10 +236,7 @@ function rightLowerLeg(gl, modelViewMatrixLoc, modelViewMatrix) {
 function rightFoot(gl, modelViewMatrixLoc, modelViewMatrix) {
   createCube(blue);
   createBuffer();
-  var instanceMatrix = mult(
-    modelViewMatrix,
-    translate(-armLegTranslate, 1 * footHeight, 0.0),
-  );
+  var instanceMatrix = mult(modelViewMatrix, translate(0, 1 * footHeight, 0.0));
   instanceMatrix = mult(
     instanceMatrix,
     scale(footWidht, footHeight, footWidht),
@@ -259,10 +251,7 @@ function rightFoot(gl, modelViewMatrixLoc, modelViewMatrix) {
 function leftFoot(gl, modelViewMatrixLoc, modelViewMatrix) {
   createCube(blue);
   createBuffer();
-  var instanceMatrix = mult(
-    modelViewMatrix,
-    translate(armLegTranslate, 1 * footHeight, 0.0),
-  );
+  var instanceMatrix = mult(modelViewMatrix, translate(0, 1 * footHeight, 0.0));
   instanceMatrix = mult(
     instanceMatrix,
     scale(footWidht, footHeight, footWidht),
