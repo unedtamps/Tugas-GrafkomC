@@ -1,7 +1,7 @@
 var torsoHeight = 5.0;
 var torsoWidth = 2.0;
-var upperArmHeight = 3.0;
-var lowerArmHeight = 2.0;
+var upperArmHeight = 2.5;
+var lowerArmHeight = 3.0;
 var upperArmWidth = 1;
 var lowerArmWidth = 0.8;
 var upperLegWidth = 1;
@@ -27,6 +27,7 @@ function imageTex(imageName) {
 function torso(gl, modelViewMatrixLoc, modelViewMatrix) {
   createCylinder(blue);
   createBuffer();
+  imageTex("skin.jpg");
   var instanceMatrix = mult(
     modelViewMatrix,
     translate(0.0, 0.5 * torsoHeight, 0.0),
@@ -181,7 +182,7 @@ function ballNode(gl, modelViewMatrixLoc, modelViewMatrix) {
   gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(instanceMatrix));
   for (var i = 0; i < 6; i++)
     gl.drawArrays(gl.TRIANGLE_FAN, 4 * i, numPositions);
-  imageTex("skin.jpg");
+  // imageTex("skin.jpg");
 }
 
 function leftLowerLeg(gl, modelViewMatrixLoc, modelViewMatrix) {

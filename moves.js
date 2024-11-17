@@ -3,8 +3,8 @@ var topologi = {
   head: { x: 0, y: 0, z: 0 },
   head1: { x: 0, y: 0, z: 0 },
   head2: { x: 0, y: 0, z: 0 },
-  leftUpperArm: { x: 300, y: 0, z: 0 },
-  leftLowerArm: { x: 0, y: 0, z: 0 },
+  leftUpperArm: { x: 180, y: 0, z: 210 },
+  leftLowerArm: { x: 0, y: 0, z: 90 },
   rightUpperArm: { x: 180, y: 180, z: 315 },
   rightLowerArm: { x: 0, y: 0, z: 0 },
   leftUpperLeg: { x: 180, y: 0, z: 0 },
@@ -77,11 +77,11 @@ var moves = {
     rotate(topologi.rightLowerArm.x, vec3(1, 0, 0)),
   ]),
   rightHand: multAll([
-    translate(0.0, handHeight, 0.0),
+    translate(0, handHeight * 1.8, 0.0),
     rotate(topologi.rightHand.x, vec3(1, 0, 0)),
   ]),
   leftHand: multAll([
-    translate(0.0, handHeight, 0.0),
+    translate(0.0, handHeight * 1.8, 0.0),
     rotate(topologi.leftHand.x, vec3(1, 0, 0)),
   ]),
   ball: multAll([
@@ -124,16 +124,44 @@ function rightArmRotate() {
     translate(
       torsoWidth + upperArmWidth - armLegTranslate,
       0.9 * torsoHeight,
-      0.0,
+      0.8,
     ),
     rotate(topologi.rightUpperArm.y, vec3(1, 1, 0)),
     rotate(topologi.rightUpperArm.z, vec3(0, 0, 1)),
   ]);
   initNodes(rightUpperArmId);
 }
+
+function leftArmMoves() {
+  moves.leftUpperArm = multAll([
+    translate(
+      -(torsoWidth + upperArmWidth) + armLegTranslate,
+      0.9 * torsoHeight,
+      0.8,
+    ),
+    rotate(topologi.leftUpperArm.x, vec3(1, 1, 0)),
+    rotateY(topologi.leftUpperArm.y),
+    rotate(topologi.leftUpperArm.z, vec3(0, 0, 1)),
+  ]);
+  initNodes(leftUpperArmId);
+}
+
+function leftLowerArmMoves() {
+  moves.leftLowerArm = multAll([
+    translate(0, upperArmHeight, 0.8),
+    rotate(topologi.leftLowerArm.z, vec3(0, 0, 1)),
+  ]);
+  initNodes(leftLowerArmId);
+}
+
+var torsoMove = 0;
 function torsoRotae() {
-  topologi.torso.y += 5;
-  moves.torso = multAll([rotate(topologi.torso.y, vec3(0, 1, 0))]);
+  // torsoMove += 0.1;
+  // topologi.torso.y += 1;
+  moves.torso = multAll([
+    translate(0, 0, torsoMove),
+    rotate(topologi.torso.y, vec3(0, 1, 0)),
+  ]);
   // initNodes(torsoId);
 }
 
@@ -158,3 +186,27 @@ function ballMove() {
   ]);
   initNodes(ballId);
 }
+
+var legtrans = 0;
+
+// function moveLeg() {
+//   legtrans += 0.4;
+//   moves.leftUpperLeg = multAll([
+//     translate(
+//       -(torsoWidth + upperLegWidth) + armLegTranslate,
+//       0.1 * upperLegHeight,
+//       0.0 + legtrans,
+//     ),
+//     rotate(topologi.leftUpperLeg.x, vec3(1, 0, 0)),
+//   ]);
+//   (moves.rightUpperLeg = multAll([
+//     translate(
+//       torsoWidth + upperLegWidth - armLegTranslate,
+//       0.1 * upperLegHeight,
+//       0.0 + legtrans,
+//     ),
+//     rotate(topologi.rightUpperLeg.x, vec3(1, 0, 0)),
+//   ])),
+//     initNodes(leftUpperLegId);
+//   initNodes(rightUpperLegId);
+// }

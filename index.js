@@ -115,9 +115,9 @@ function init() {
   gl.uniform4fv(uLightPositionLoc, flatten(lightPosition));
   gl.uniform1f(materialShininessLoc, materialShininess);
 
-  var image = new Image();
-  image.src = "skin.jpg";
-  configureTexture(image);
+  // var image = new Image();
+  // image.src = "skin.jpg";
+  // configureTexture(image);
   for (i = 0; i < numNodes; i++) initNodes(i);
   render();
 }
@@ -162,9 +162,12 @@ function render() {
   rightArmRotate();
   torsoRotae();
   ballMove();
+  // moveLeg();
+  leftArmMoves();
+  leftLowerArmMoves();
 
-  traverse(torsoId);
   traverse(ballId);
+  traverse(torsoId);
   requestAnimationFrame(render);
 }
 
