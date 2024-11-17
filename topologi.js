@@ -14,8 +14,8 @@ var headHeight = 2.0;
 var headWidth = 2.0;
 var handWidth = 1.3;
 var handHeight = 1.3;
-var ballHeight = 3.2;
-var ballWidth = 3.2;
+var ballHeight = 2.5;
+var ballWidth = 2.5;
 var armLegTranslate = 1.6;
 
 function imageTex(imageName) {
@@ -181,7 +181,6 @@ function ballNode(gl, modelViewMatrixLoc, modelViewMatrix) {
   gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(instanceMatrix));
   for (var i = 0; i < 6; i++)
     gl.drawArrays(gl.TRIANGLE_FAN, 4 * i, numPositions);
-
   imageTex("skin.jpg");
 }
 

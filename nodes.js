@@ -91,12 +91,7 @@ function initNodes(Id) {
       break;
 
     case rightHandId:
-      figure[rightHandId] = createNode(
-        moves.rightHand,
-        rightHand,
-        null,
-        ballId,
-      );
+      figure[rightHandId] = createNode(moves.rightHand, rightHand, null, null);
       break;
 
     case leftHandId:

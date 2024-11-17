@@ -164,7 +164,7 @@ function render() {
   ballMove();
 
   traverse(torsoId);
-  // traverse(ballId);
+  traverse(ballId);
   requestAnimationFrame(render);
 }
 

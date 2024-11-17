@@ -110,14 +110,14 @@ var dir = 1;
 function rightArmRotate() {
   if (topologi.rightUpperArm.z >= 315) {
     dir = -1;
-  } else if (topologi.rightUpperArm.z == 300) {
+  } else if (topologi.rightUpperArm.z <= 300) {
     dir = 1;
   }
 
   if (dir == -1) {
-    topologi.rightUpperArm.z -= 1;
+    topologi.rightUpperArm.z -= 1.2;
   } else {
-    topologi.rightUpperArm.z += 1;
+    topologi.rightUpperArm.z += 1.2;
   }
 
   moves.rightUpperArm = multAll([
@@ -137,23 +137,24 @@ function torsoRotae() {
   // initNodes(torsoId);
 }
 
-var ballmoveY = 4;
+var ballmoveY = -0.5;
 var balldir = 1;
 
 function ballMove() {
-  if (ballmoveY >= 6) {
+  if (ballmoveY >= -0.5) {
     balldir = -1;
-  } else if (ballmoveY <= 2.5) {
+  } else if (ballmoveY <= -3) {
     balldir = 1;
   }
-  console.log(ballmoveY);
-  console.log(balldir);
 
-  balldir == 1 ? (ballmoveY += 0.1) : (ballmoveY -= 0.1);
+  balldir == 1 ? (ballmoveY += 0.2) : (ballmoveY -= 0.2);
 
+  topologi.ball.x += 4;
+  topologi.ball.y += 4;
   moves.ball = multAll([
-    translate(0.0, ballmoveY, 0.0),
-    rotate(topologi.ball.x, vec3(1, 0, 0)),
+    translate(4.7, ballmoveY, 0),
+    // rotate(topologi.ball.x, vec3(1, 1, 0)),
+    rotate(topologi.ball.x, vec3(1, 0, 1)),
   ]);
   initNodes(ballId);
 }
