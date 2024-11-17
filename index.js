@@ -20,10 +20,6 @@ var fovy = 45;
 var aspect;
 
 var numNodes = 16;
-var numAngles = 11;
-var angle = 0;
-
-var numVertices = 24;
 
 var stack = [];
 
@@ -35,24 +31,15 @@ for (var i = 0; i < numNodes; i++)
 var vBuffer;
 var modelViewLoc;
 
-// var lightPosition = vec4(0.5, 0.5, 0, 0.0);
-// var lightAmbient = vec4(0.3, 0.4, 1.0, 1.0); // Neutral ambient lighting
-// var lightDiffuse = vec4(0.2, 1, 1, 1.0);
-// var lightSpecular = vec4(1.0, 1.0, 1.0, 1.0);
-// var materialAmbient = vec4(1.0, 0.0, 1.0, 1.0);
-// var materialDiffuse = vec4(1.0, 0.8, 1.0, 1.0);
-// var materialSpecular = vec4(1.0, 1.0, 1.0, 1.0);
-// var materialShininess = 20.0;
-
 var lightPosition = vec4(0.5, 0.5, 0, 0.0);
-var lightAmbient = vec4(0.3, 0.3, 0.5, 1.0); // Neutral ambient lighting (gray)
-var lightDiffuse = vec4(0.7, 0.7, 0.7, 1.0); // Neutral diffuse lighting (gray)
-var lightSpecular = vec4(0.9, 0.9, 0.9, 1.0); // Bright specular lighting (white)
+var lightAmbient = vec4(0.3, 0.3, 0.5, 1.0);
+var lightDiffuse = vec4(0.7, 0.7, 0.7, 1.0);
+var lightSpecular = vec4(0.9, 0.9, 0.9, 1.0);
 
-var materialAmbient = vec4(1.0, 1.0, 1.0, 1.0); // Use white to preserve texture color
+var materialAmbient = vec4(1.0, 1.0, 1.0, 1.0);
 var materialDiffuse = vec4(1.0, 1.0, 1.0, 1.0);
 var materialSpecular = vec4(1.0, 1.0, 1.0, 1.0);
-var materialShininess = 50.0;
+var materialShininess = 10.0;
 
 var ambientProduct = mult(lightAmbient, materialAmbient);
 var diffuseProduct = mult(lightDiffuse, materialDiffuse);
@@ -64,8 +51,7 @@ var uSpecularProductLoc;
 var uLightPositionLoc;
 var materialShininessLoc;
 
-// lighting
-
+// configure texture image
 function configureTexture(image) {
   var texture = gl.createTexture();
   gl.bindTexture(gl.TEXTURE_2D, texture);
@@ -73,7 +59,6 @@ function configureTexture(image) {
   gl.generateMipmap(gl.TEXTURE_2D);
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-  // Use linear filtering to make sure the texture scales smoothly
   gl.texParameteri(
     gl.TEXTURE_2D,
     gl.TEXTURE_MIN_FILTER,
@@ -174,9 +159,12 @@ function createBuffer() {
 function render() {
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
   Transformer();
-  theta[torsoId] += 3;
 
-  initNodes(torsoId);
+  // theta[torsoId] += 4;
+  // initNodes(torsoId);
+
+  theta[rightUpperArmId] += 4;
+  initNodes(rightUpperArmId);
 
   traverse(torsoId);
   requestAnimationFrame(render);
@@ -188,15 +176,13 @@ function Transformer() {
     radius * Math.sin(0) * Math.sin(phi),
     radius * Math.cos(0),
   );
-  const at = vec3(0.0, 0.0, 0.0); // Look at the center (the object)
-  const up = vec3(0.0, 1.0, 0.0); // Up is in the Y direction
+  const at = vec3(0.0, 0.0, 0.0);
+  const up = vec3(0.0, 1.0, 0.0);
   modelViewMatrix = lookAt(eye, at, up);
   projectionMatrix = perspective(fovy, aspect, near, far);
   gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
   gl.uniformMatrix4fv(projectionMatrixLoc, false, flatten(projectionMatrix));
 
-  // nMatrix = normalMatrix(modelViewMatrix, true);
-  // gl.uniformMatrix3fv(nMatrixLoc, false, flatten(nMatrix));
   nMatrix = normalMatrix(modelViewMatrix, true);
   gl.uniformMatrix3fv(nMatrixLoc, false, flatten(nMatrix));
 }

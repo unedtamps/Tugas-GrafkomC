@@ -95,7 +95,7 @@ function rightUpperArm(gl, modelViewMatrixLoc, modelViewMatrix) {
   createBuffer();
   var instanceMatrix = mult(
     modelViewMatrix,
-    translate(-armLegTranslate, 0.5 * upperArmHeight, 0.0),
+    translate(0, 0.5 * upperArmHeight, 0.0),
   );
   instanceMatrix = mult(
     instanceMatrix,

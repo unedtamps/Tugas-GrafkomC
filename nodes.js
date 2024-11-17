@@ -49,7 +49,7 @@ function initNodes(Id) {
 
     case leftUpperArmId:
       m = translate(-(torsoWidth + upperArmWidth), 0.9 * torsoHeight, 0.0);
-      m = mult(m, rotate(theta[leftUpperArmId], vec3(1, 0, 0)));
+      // m = mult(m, rotate(theta[leftUpperArmId], vec3(1, 0, 0)));
       figure[leftUpperArmId] = createNode(
         m,
         leftUpperArm,
@@ -59,8 +59,19 @@ function initNodes(Id) {
       break;
 
     case rightUpperArmId:
-      m = translate(torsoWidth + upperArmWidth, 0.9 * torsoHeight, 0.0);
-      m = mult(m, rotate(theta[rightUpperArmId], vec3(1, 0, 0)));
+      let toOrigin = translate(
+        torsoWidth + upperArmWidth - 1.55,
+        1 * torsoHeight,
+        0.0,
+      );
+      let rotates = rotate(theta[rightUpperArmId], vec3(1, 1, 0));
+      // let backtoOrigin = translate(
+      //   -(torsoWidth + upperArmWidth),
+      //   -0.9 * torsoHeight,
+      //   0.0,
+      // );
+      m = mult(toOrigin, rotates);
+
       figure[rightUpperArmId] = createNode(
         m,
         rightUpperArm,
@@ -98,7 +109,7 @@ function initNodes(Id) {
       break;
 
     case rightLowerArmId:
-      m = translate(0.0, upperArmHeight, 0.0);
+      m = translate(1.55, upperArmHeight, 0.0);
       m = mult(m, rotate(theta[rightLowerArmId], vec3(1, 0, 0)));
       figure[rightLowerArmId] = createNode(m, rightLowerArm, null, rightHandId);
       break;
