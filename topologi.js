@@ -2,9 +2,9 @@ var torsoHeight = 5.0;
 var torsoWidth = 2.0;
 var upperArmHeight = 2.5;
 var lowerArmHeight = 3.0;
-var upperArmWidth = 1;
+var upperArmWidth = 1.1;
 var lowerArmWidth = 0.8;
-var upperLegWidth = 1;
+var upperLegWidth = 1.2;
 var lowerLegWidth = 0.8;
 var lowerLegHeight = 4.0;
 var upperLegHeight = 3.0;
@@ -25,7 +25,7 @@ function imageTex(imageName) {
 }
 
 function torso(gl, modelViewMatrixLoc, modelViewMatrix) {
-  createCylinder(blue);
+  createCylinder(black);
   createBuffer();
   imageTex("skin.jpg");
   var instanceMatrix = mult(
@@ -58,7 +58,7 @@ function head(gl, modelViewMatrixLoc, modelViewMatrix) {
 }
 
 function leftUpperArm(gl, modelViewMatrixLoc, modelViewMatrix) {
-  createCube(blue);
+  createCube(black);
   createBuffer();
   var instanceMatrix = mult(
     modelViewMatrix,
@@ -90,7 +90,7 @@ function leftLowerArm(gl, modelViewMatrixLoc, modelViewMatrix) {
 }
 
 function rightUpperArm(gl, modelViewMatrixLoc, modelViewMatrix) {
-  createCube(blue);
+  createCube(black);
   createBuffer();
   var instanceMatrix = mult(
     modelViewMatrix,
@@ -122,7 +122,7 @@ function rightLowerArm(gl, modelViewMatrixLoc, modelViewMatrix) {
 }
 
 function leftUpperLeg(gl, modelViewMatrixLoc, modelViewMatrix) {
-  createCube(black);
+  createCube(blue);
   createBuffer();
   var instanceMatrix = mult(
     modelViewMatrix,
@@ -202,7 +202,7 @@ function leftLowerLeg(gl, modelViewMatrixLoc, modelViewMatrix) {
 }
 
 function rightUpperLeg(gl, modelViewMatrixLoc, modelViewMatrix) {
-  createCube(black);
+  createCube(blue);
   createBuffer();
   var instanceMatrix = mult(
     modelViewMatrix,
@@ -234,7 +234,7 @@ function rightLowerLeg(gl, modelViewMatrixLoc, modelViewMatrix) {
 }
 
 function rightFoot(gl, modelViewMatrixLoc, modelViewMatrix) {
-  createCube(blue);
+  createCube(tosca);
   createBuffer();
   var instanceMatrix = mult(modelViewMatrix, translate(0, 2 * footHeight, 0.0));
   instanceMatrix = mult(
@@ -249,7 +249,7 @@ function rightFoot(gl, modelViewMatrixLoc, modelViewMatrix) {
 // }
 
 function leftFoot(gl, modelViewMatrixLoc, modelViewMatrix) {
-  createCube(blue);
+  createCube(tosca);
   createBuffer();
   var instanceMatrix = mult(modelViewMatrix, translate(0, 2 * footHeight, 0.0));
   instanceMatrix = mult(

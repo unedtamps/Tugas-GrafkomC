@@ -3,6 +3,7 @@ var brown = vec4(1, 1, 1, 1);
 var white = vec4(1, 1, 1, 1);
 var black = vec4(0, 0, 0, 1);
 var blue = vec4(0, 0, 1, 1);
+var tosca = vec4(143 / 255, 255 / 255, 249 / 255, 1);
 var pointsArray = [];
 var colors = [];
 var texCoord = [vec2(0, 0), vec2(0, 1), vec2(1, 1), vec2(1, 0)];
