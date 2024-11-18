@@ -153,24 +153,33 @@ function rightArmMoves() {
 
 function leftLowerArmMoves() {
   moves.leftLowerArm = multAll([
-    translate(0, upperArmHeight, 0.8),
+    translate(0, upperArmHeight, 0.0),
     rotate(topologi.leftLowerArm.z, vec3(0, 0, 1)),
   ]);
   initNodes(leftLowerArmId);
 }
 
 var torsoMove = 0;
+var torsodir = 1;
 function torsoRotae() {
-  // torsoMove += 0.1;
-  topologi.torso.y += 1;
+  if (torsoMove >= 15) {
+    torsodir = -1;
+  } else if (torsoMove <= 0) {
+    torsodir = 1;
+  }
+
+  torsodir == 1 ? (torsoMove += 0.1) : (torsoMove -= 0.1);
+  // topologi.torso.y += 1;
   moves.torso = multAll([
     translate(0, 0, torsoMove),
     rotate(topologi.torso.y, vec3(0, 1, 0)),
   ]);
-  // initNodes(torsoId);
+  initNodes(torsoId);
 }
 
 var ballmoveY = -0.5;
+var balldirZ = 1;
+var ballmoveZ = 0;
 var balldir = 1;
 
 function ballMove() {
@@ -179,13 +188,20 @@ function ballMove() {
   } else if (ballmoveY <= -5) {
     balldir = 1;
   }
+  if (ballmoveZ >= 15) {
+    balldirZ = -1;
+  } else if (ballmoveZ <= 0) {
+    balldirZ = 1;
+  }
 
   balldir == 1 ? (ballmoveY += 0.34) : (ballmoveY -= 0.34);
+  balldirZ == 1 ? (ballmoveZ += 0.1) : (ballmoveZ -= 0.1);
+  console.log(ballmoveZ);
 
   topologi.ball.x += 4;
   topologi.ball.y += 4;
   moves.ball = multAll([
-    translate(4.7, ballmoveY, 0),
+    translate(4.7, ballmoveY, ballmoveZ),
     // rotate(topologi.ball.x, vec3(1, 1, 0)),
     rotate(topologi.ball.x, vec3(1, 0, 1)),
   ]);
