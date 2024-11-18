@@ -33,9 +33,9 @@ function initNodes(Id) {
       break;
 
     case headId:
-      figure[headId] = createNode(moves.head, head, leftUpperArmId, null);
+      figure[headId] = createNode(moves.head, head, leftUpperArmId, ballId);
       break;
-
+      ballId;
     case leftUpperArmId:
       figure[leftUpperArmId] = createNode(
         moves.leftUpperArm,
@@ -91,12 +91,7 @@ function initNodes(Id) {
       break;
 
     case rightHandId:
-      figure[rightHandId] = createNode(
-        moves.rightHand,
-        rightHand,
-        ballId,
-        null,
-      );
+      figure[rightHandId] = createNode(moves.rightHand, rightHand, null, null);
       break;
 
     case leftHandId:

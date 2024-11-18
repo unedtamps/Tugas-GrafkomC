@@ -164,7 +164,7 @@ function render() {
   moveLeg();
   leftArmMoves();
   rightUpperArmMoves();
-  rightLowerArmMoves();
+  // rightLowerArmMoves();
 
   // traverse(ballId);
   traverse(torsoId);
