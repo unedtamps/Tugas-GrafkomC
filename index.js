@@ -159,10 +159,10 @@ function createBuffer() {
 function render() {
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
   Transformer();
-  rightArmRotate();
+  rightArmMoves();
   torsoRotae();
   ballMove();
-  // moveLeg();
+  moveLeg();
   leftArmMoves();
   leftLowerArmMoves();
 

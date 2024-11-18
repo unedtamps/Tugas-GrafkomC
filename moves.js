@@ -1,3 +1,8 @@
+var maxUpperLegPos = 250;
+var maxLowerLegPos = 285;
+var minUpperLegPos = 180;
+var minLowerLegPos = 0;
+
 var topologi = {
   torso: { x: 0, y: 0, z: 0 },
   head: { x: 0, y: 0, z: 0 },
@@ -107,7 +112,7 @@ var moves = {
 };
 var dir = 1;
 
-function rightArmRotate() {
+function leftArmMoves() {
   if (topologi.rightUpperArm.z >= 315) {
     dir = -1;
   } else if (topologi.rightUpperArm.z <= 300) {
@@ -115,9 +120,9 @@ function rightArmRotate() {
   }
 
   if (dir == -1) {
-    topologi.rightUpperArm.z -= 1.2;
+    topologi.rightUpperArm.z -= 1.1;
   } else {
-    topologi.rightUpperArm.z += 1.2;
+    topologi.rightUpperArm.z += 1.1;
   }
 
   moves.rightUpperArm = multAll([
@@ -132,7 +137,7 @@ function rightArmRotate() {
   initNodes(rightUpperArmId);
 }
 
-function leftArmMoves() {
+function rightArmMoves() {
   moves.leftUpperArm = multAll([
     translate(
       -(torsoWidth + upperArmWidth) + armLegTranslate,
@@ -157,7 +162,7 @@ function leftLowerArmMoves() {
 var torsoMove = 0;
 function torsoRotae() {
   // torsoMove += 0.1;
-  // topologi.torso.y += 1;
+  topologi.torso.y += 1;
   moves.torso = multAll([
     translate(0, 0, torsoMove),
     rotate(topologi.torso.y, vec3(0, 1, 0)),
@@ -171,11 +176,11 @@ var balldir = 1;
 function ballMove() {
   if (ballmoveY >= -0.5) {
     balldir = -1;
-  } else if (ballmoveY <= -3) {
+  } else if (ballmoveY <= -5) {
     balldir = 1;
   }
 
-  balldir == 1 ? (ballmoveY += 0.2) : (ballmoveY -= 0.2);
+  balldir == 1 ? (ballmoveY += 0.34) : (ballmoveY -= 0.34);
 
   topologi.ball.x += 4;
   topologi.ball.y += 4;
@@ -187,26 +192,64 @@ function ballMove() {
   initNodes(ballId);
 }
 
+var legindex = 0;
 var legtrans = 0;
 
-// function moveLeg() {
-//   legtrans += 0.4;
-//   moves.leftUpperLeg = multAll([
-//     translate(
-//       -(torsoWidth + upperLegWidth) + armLegTranslate,
-//       0.1 * upperLegHeight,
-//       0.0 + legtrans,
-//     ),
-//     rotate(topologi.leftUpperLeg.x, vec3(1, 0, 0)),
-//   ]);
-//   (moves.rightUpperLeg = multAll([
-//     translate(
-//       torsoWidth + upperLegWidth - armLegTranslate,
-//       0.1 * upperLegHeight,
-//       0.0 + legtrans,
-//     ),
-//     rotate(topologi.rightUpperLeg.x, vec3(1, 0, 0)),
-//   ])),
-//     initNodes(leftUpperLegId);
-//   initNodes(rightUpperLegId);
-// }
+var changeLeg = 0;
+var direction = 1; // 1 for increasing, -1 for decreasing
+
+function moveLeg() {
+  if (changeLeg === 0) {
+    topologi.leftUpperLeg.x += direction * 6;
+    topologi.leftLowerLeg.x -= direction * 6;
+
+    if (topologi.leftUpperLeg.x >= maxUpperLegPos && direction === 1) {
+      direction = -1; // Start decreasing
+    } else if (topologi.leftUpperLeg.x <= minUpperLegPos && direction === -1) {
+      direction = 1; // Start increasing the other leg
+      changeLeg = 1;
+    }
+
+    moves.leftUpperLeg = multAll([
+      translate(
+        -(torsoWidth + upperLegWidth) + armLegTranslate,
+        0.1 * upperLegHeight,
+        0.0 + legtrans,
+      ),
+      rotate(topologi.leftUpperLeg.x, vec3(1, 0, 0)),
+    ]);
+    moves.leftLowerLeg = multAll([
+      translate(0.0, upperLegHeight, 0.0),
+      rotate(topologi.leftLowerLeg.x, vec3(1, 0, 0)),
+    ]);
+  } else if (changeLeg === 1) {
+    // Right leg movement
+    topologi.rightUpperLeg.x += direction * 6;
+    topologi.rightLowerLeg.x -= direction * 6;
+
+    if (topologi.rightUpperLeg.x >= maxUpperLegPos && direction === 1) {
+      direction = -1; // Start decreasing
+    } else if (topologi.rightUpperLeg.x <= minUpperLegPos && direction === -1) {
+      direction = 1; // Start increasing the other leg
+      changeLeg = 0;
+    }
+
+    moves.rightUpperLeg = multAll([
+      translate(
+        torsoWidth + upperLegWidth - armLegTranslate,
+        0.1 * upperLegHeight,
+        0.0,
+      ),
+      rotate(topologi.rightUpperLeg.x, vec3(1, 0, 0)),
+    ]);
+    moves.rightLowerLeg = multAll([
+      translate(0.0, upperLegHeight, 0.0),
+      rotate(topologi.rightLowerLeg.x, vec3(1, 0, 0)),
+    ]);
+  }
+
+  initNodes(leftUpperLegId);
+  initNodes(leftLowerLegId);
+  initNodes(rightUpperLegId);
+  initNodes(rightLowerLegId);
+}

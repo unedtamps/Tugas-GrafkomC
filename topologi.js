@@ -6,8 +6,8 @@ var upperArmWidth = 1;
 var lowerArmWidth = 0.8;
 var upperLegWidth = 1;
 var lowerLegWidth = 0.8;
-var lowerLegHeight = 3.0;
-var upperLegHeight = 2.0;
+var lowerLegHeight = 4.0;
+var upperLegHeight = 3.0;
 var footHeight = 1.2;
 var footWidht = 1.2;
 var headHeight = 2.0;
@@ -236,7 +236,7 @@ function rightLowerLeg(gl, modelViewMatrixLoc, modelViewMatrix) {
 function rightFoot(gl, modelViewMatrixLoc, modelViewMatrix) {
   createCube(blue);
   createBuffer();
-  var instanceMatrix = mult(modelViewMatrix, translate(0, 1 * footHeight, 0.0));
+  var instanceMatrix = mult(modelViewMatrix, translate(0, 2 * footHeight, 0.0));
   instanceMatrix = mult(
     instanceMatrix,
     scale(footWidht, footHeight, footWidht),
@@ -251,7 +251,7 @@ function rightFoot(gl, modelViewMatrixLoc, modelViewMatrix) {
 function leftFoot(gl, modelViewMatrixLoc, modelViewMatrix) {
   createCube(blue);
   createBuffer();
-  var instanceMatrix = mult(modelViewMatrix, translate(0, 1 * footHeight, 0.0));
+  var instanceMatrix = mult(modelViewMatrix, translate(0, 2 * footHeight, 0.0));
   instanceMatrix = mult(
     instanceMatrix,
     scale(footWidht, footHeight, footWidht),
