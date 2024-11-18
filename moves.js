@@ -9,9 +9,9 @@ var topologi = {
   head1: { x: 0, y: 0, z: 0 },
   head2: { x: 0, y: 0, z: 0 },
   leftUpperArm: { x: 180, y: 0, z: 210 },
-  leftLowerArm: { x: 0, y: 0, z: 90 },
-  rightUpperArm: { x: 180, y: 180, z: 315 },
-  rightLowerArm: { x: 0, y: 0, z: 0 },
+  leftLowerArm: { x: 20, y: 0, z: 90 },
+  rightUpperArm: { x: 180, y: 180, z: 310 },
+  rightLowerArm: { x: 0, y: 0, z: 345 },
   leftUpperLeg: { x: 180, y: 0, z: 0 },
   leftLowerLeg: { x: 0, y: 0, z: 0 },
   rightUpperLeg: { x: 180, y: 0, z: 0 },
@@ -76,10 +76,12 @@ var moves = {
   leftLowerArm: multAll([
     translate(0, upperArmHeight, 0.0),
     rotate(topologi.leftLowerArm.x, vec3(1, 0, 0)),
+    rotate(topologi.leftLowerArm.z, vec3(0, 0, 1)),
   ]),
   rightLowerArm: multAll([
     translate(0, upperArmHeight, 0.0),
     rotate(topologi.rightLowerArm.x, vec3(1, 0, 0)),
+    rotate(topologi.rightLowerArm.z, vec3(0, 0, 1)),
   ]),
   rightHand: multAll([
     translate(0, handHeight * 1.8, 0.0),
@@ -112,17 +114,17 @@ var moves = {
 };
 var dir = 1;
 
-function leftArmMoves() {
-  if (topologi.rightUpperArm.z >= 315) {
+function rightUpperArmMoves() {
+  if (topologi.rightUpperArm.z >= 310) {
     dir = -1;
-  } else if (topologi.rightUpperArm.z <= 300) {
+  } else if (topologi.rightUpperArm.z <= 295) {
     dir = 1;
   }
 
   if (dir == -1) {
-    topologi.rightUpperArm.z -= 1.1;
+    topologi.rightUpperArm.z -= 0.3;
   } else {
-    topologi.rightUpperArm.z += 1.1;
+    topologi.rightUpperArm.z += 0.3;
   }
 
   moves.rightUpperArm = multAll([
@@ -137,7 +139,7 @@ function leftArmMoves() {
   initNodes(rightUpperArmId);
 }
 
-function rightArmMoves() {
+function leftArmMoves() {
   moves.leftUpperArm = multAll([
     translate(
       -(torsoWidth + upperArmWidth) + armLegTranslate,
@@ -151,12 +153,25 @@ function rightArmMoves() {
   initNodes(leftUpperArmId);
 }
 
-function leftLowerArmMoves() {
-  moves.leftLowerArm = multAll([
+function rightLowerArmMoves() {
+  if (topologi.rightLowerArm.z >= 345) {
+    dir = -1;
+  } else if (topologi.rightLowerArm.z <= 330) {
+    dir = 1;
+  }
+
+  if (dir == -1) {
+    topologi.rightLowerArm.z -= 0.1;
+  } else {
+    topologi.rightLowerArm.z += 0.1;
+  }
+
+  (moves.rightLowerArm = multAll([
     translate(0, upperArmHeight, 0.0),
-    rotate(topologi.leftLowerArm.z, vec3(0, 0, 1)),
-  ]);
-  initNodes(leftLowerArmId);
+    rotate(topologi.rightLowerArm.x, vec3(1, 0, 0)),
+    rotate(topologi.rightLowerArm.z, vec3(0, 0, 1)),
+  ])),
+    initNodes(rightLowerArmId);
 }
 
 var torsoMove = 0;
@@ -169,23 +184,23 @@ function torsoRotae() {
   }
 
   torsodir == 1 ? (torsoMove += 0.1) : (torsoMove -= 0.1);
-  // topologi.torso.y += 1;
+  topologi.torso.y += 1;
   moves.torso = multAll([
     translate(0, 0, torsoMove),
     rotate(topologi.torso.y, vec3(0, 1, 0)),
   ]);
-  initNodes(torsoId);
+  // initNodes(torsoId);
 }
 
-var ballmoveY = -0.5;
+var ballmoveY = 4.3;
 var balldirZ = 1;
 var ballmoveZ = 0;
 var balldir = 1;
 
 function ballMove() {
-  if (ballmoveY >= -0.5) {
+  if (ballmoveY >= 9) {
     balldir = -1;
-  } else if (ballmoveY <= -5) {
+  } else if (ballmoveY <= 4.3) {
     balldir = 1;
   }
   if (ballmoveZ >= 15) {
@@ -194,16 +209,15 @@ function ballMove() {
     balldirZ = 1;
   }
 
-  balldir == 1 ? (ballmoveY += 0.34) : (ballmoveY -= 0.34);
+  balldir == 1 ? (ballmoveY += 0.2) : (ballmoveY -= 0.2);
   balldirZ == 1 ? (ballmoveZ += 0.1) : (ballmoveZ -= 0.1);
-  console.log(ballmoveZ);
 
   topologi.ball.x += 4;
   topologi.ball.y += 4;
   moves.ball = multAll([
-    translate(4.7, ballmoveY, ballmoveZ),
-    // rotate(topologi.ball.x, vec3(1, 1, 0)),
-    rotate(topologi.ball.x, vec3(1, 0, 1)),
+    translate(0, ballmoveY, 0),
+    rotate(topologi.ball.x, vec3(1, 0, 0)),
+    rotate(topologi.ball.z, vec3(0, 0, 1)),
   ]);
   initNodes(ballId);
 }
@@ -239,7 +253,6 @@ function moveLeg() {
       rotate(topologi.leftLowerLeg.x, vec3(1, 0, 0)),
     ]);
   } else if (changeLeg === 1) {
-    // Right leg movement
     topologi.rightUpperLeg.x += direction * 6;
     topologi.rightLowerLeg.x -= direction * 6;
 
@@ -263,7 +276,6 @@ function moveLeg() {
       rotate(topologi.rightLowerLeg.x, vec3(1, 0, 0)),
     ]);
   }
-
   initNodes(leftUpperLegId);
   initNodes(leftLowerLegId);
   initNodes(rightUpperLegId);

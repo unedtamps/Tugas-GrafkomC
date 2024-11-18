@@ -182,7 +182,7 @@ function ballNode(gl, modelViewMatrixLoc, modelViewMatrix) {
   gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(instanceMatrix));
   for (var i = 0; i < 6; i++)
     gl.drawArrays(gl.TRIANGLE_FAN, 4 * i, numPositions);
-  // imageTex("skin.jpg");
+  imageTex("skin.jpg");
 }
 
 function leftLowerLeg(gl, modelViewMatrixLoc, modelViewMatrix) {

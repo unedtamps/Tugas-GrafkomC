@@ -159,14 +159,14 @@ function createBuffer() {
 function render() {
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
   Transformer();
-  rightArmMoves();
   torsoRotae();
   ballMove();
   moveLeg();
   leftArmMoves();
-  leftLowerArmMoves();
+  rightUpperArmMoves();
+  rightLowerArmMoves();
 
-  traverse(ballId);
+  // traverse(ballId);
   traverse(torsoId);
   requestAnimationFrame(render);
 }
