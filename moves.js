@@ -2,6 +2,8 @@ var maxUpperLegPos = 250;
 var maxLowerLegPos = 285;
 var minUpperLegPos = 180;
 var minLowerLegPos = 0;
+var movementMode = "stationary"; // Default mode: stationary
+
 
 var topologi = {
   torso: { x: 0, y: 0, z: 0 },
@@ -178,6 +180,10 @@ function leftArmMoves() {
 var torsoMove = 0;
 var torsodir = 1;
 function torsoRotae() {
+  if (movementMode === "dribble-rotate") {
+    topologi.torso.y += 1; // Only rotate if mode is 'dribble-rotate'
+  }
+
   if (torsoMove >= 15) {
     torsodir = -1;
   } else if (torsoMove <= 0) {
@@ -185,7 +191,6 @@ function torsoRotae() {
   }
 
   torsodir == 1 ? (torsoMove += 0.1) : (torsoMove -= 0.1);
-  // topologi.torso.y += 1;
   moves.torso = multAll([
     translate(0, 0, torsoMove),
     rotate(topologi.torso.y, vec3(0, 1, 0)),
@@ -193,12 +198,17 @@ function torsoRotae() {
   initNodes(torsoId);
 }
 
+
 var ballmoveY = -5;
 var balldirZ = 1;
 var ballmoveZ = 1.3;
 var balldir = 1;
 
 function ballMove() {
+  if (movementMode === "stationary") {
+    return; // Do nothing if mode is 'stationary'
+  }
+
   if (ballmoveY >= -5) {
     balldir = -1;
   } else if (ballmoveY <= -11) {
@@ -220,6 +230,7 @@ function ballMove() {
   ]);
   initNodes(ballId);
 }
+
 
 var legindex = 0;
 var legtrans = 0;
@@ -275,6 +286,19 @@ function moveLeg() {
       rotate(topologi.rightLowerLeg.x, vec3(1, 0, 0)),
     ]);
   }
+
+  document.getElementById("movement-mode").addEventListener("change", function (e) {
+    movementMode = e.target.value;
+    console.log("Movement mode changed to:", movementMode);
+  
+    if (movementMode === "stationary") {
+      torsoMove = 0;
+      topologi.torso.y = 0;
+      ballmoveY = -5;
+      ballmoveZ = 1.3;
+    }
+  });  
+
   initNodes(leftUpperLegId);
   initNodes(leftLowerLegId);
   initNodes(rightUpperLegId);

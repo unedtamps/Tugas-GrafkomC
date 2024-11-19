@@ -3,6 +3,16 @@
   <body>
     <canvas id="gl-canvas" width="512" height="512"> </canvas>
 
+    <div style="position: absolute; top: 10px; left: 10px; z-index: 1000;">
+      <label for="movement-mode">Select Movement:</label>
+      <select id="movement-mode">
+        <option value="stationary">Stationary</option>
+        <option value="dribble">Dribble Ball</option>
+        <option value="dribble-rotate">Dribble and Rotate</option>
+      </select>
+    </div>
+    
+
     <script id="vertex-shader" type="x-shader/x-vertex">
       #version 300 es
 
