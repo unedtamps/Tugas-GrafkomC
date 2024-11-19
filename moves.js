@@ -5,7 +5,7 @@ var minLowerLegPos = 0;
 var movementMode = "stationary"; // Default mode: stationary
 var ballThrowing = false; // Status lemparan
 var throwTime = 0;        // Waktu untuk animasi parabola
-var ballInitPos = { x: 4, y: -5, z: 1.3 }; // Posisi awal bola
+var ballInitPos = { x: 0, y: 0, z: 0 }; // Posisi awal bola
 
 
 
@@ -122,6 +122,7 @@ var moves = {
 var dir = 1;
 
 function rightUpperArmMoves() {
+  if (movementMode === "stationary") return;
   if (topologi.rightUpperArm.z >= 320) {
     dir = -1;
   } else if (topologi.rightUpperArm.z <= 290) {
@@ -147,6 +148,7 @@ function rightUpperArmMoves() {
 }
 
 function leftArmMoves() {
+  if (movementMode === "stationary") return;
   moves.leftUpperArm = multAll([
     translate(
       -(torsoWidth + upperArmWidth) + armLegTranslate,
@@ -235,40 +237,45 @@ function ballMove() {
   initNodes(ballId);
 }
 
-function throwBall() {
-  if (!ballThrowing) return;
+// function throwBall() {
+//   if (!ballThrowing) return; // Hanya lanjutkan jika ballThrowing adalah true
 
-  // Hitung gerakan parabola
-  throwTime += 0.05; // Kecepatan waktu
-  let gravity = -9.8;
-  let initialVelocity = 15;
-  let angle = Math.PI / 4; // Sudut 45 derajat
+//   // Perbarui waktu lemparan
+//   throwTime += 0.05; // Kecepatan animasi
 
-  let throwX = ballInitPos.x + initialVelocity * Math.cos(angle) * throwTime;
-  let throwY =
-    ballInitPos.y +
-    initialVelocity * Math.sin(angle) * throwTime +
-    0.5 * gravity * throwTime * throwTime;
-  let throwZ = ballInitPos.z + 10 * throwTime; // Gerakan ke depan
+//   // Definisikan gravitasi, kecepatan awal, dan sudut
+//   let gravity = -9.8;
+//   let initialVelocity = 20; // Kecepatan awal lebih besar
+//   let angle = Math.PI / 6; // Sudut lemparan (30 derajat)
 
-  // Update posisi bola
-  if (throwY >= ballInitPos.y) {
-    moves.ball = multAll([
-      translate(throwX, throwY, throwZ),
-      rotate(topologi.ball.x, vec3(1, 0, 0)),
-    ]);
-  } else {
-    // Reset posisi bola setelah lemparan selesai
-    ballThrowing = false;
-    throwTime = 0;
-    moves.ball = multAll([
-      translate(ballInitPos.x, ballInitPos.y, ballInitPos.z),
-      rotate(topologi.ball.x, vec3(1, 0, 0)),
-    ]);
-  }
+//   // Hitung posisi bola
+//   let throwX = ballInitPos.x + initialVelocity * Math.cos(angle) * throwTime;
+//   let throwY = ballInitPos.y + initialVelocity * Math.sin(angle) * throwTime + 0.5 * gravity * throwTime * throwTime;
+//   let throwZ = ballInitPos.z + 5 * throwTime; // Atur pergerakan ke depan
 
-  initNodes(ballId);
-}
+//   console.log("throwX:", throwX, "throwY:", throwY, "throwZ:", throwZ); // Debugging
+
+//   // Cek jika bola telah mencapai tanah
+//   if (throwY >= ballInitPos.y) {
+//     // Bola masih dalam gerakan
+//     moves.ball = multAll([
+//       translate(throwX, throwY, throwZ),
+//       rotate(topologi.ball.x, vec3(1, 0, 0))
+//     ]);
+//   } else {
+//     // Bola mendarat, reset posisinya
+//     ballThrowing = false;
+//     throwTime = 0;
+//     moves.ball = multAll([
+//       translate(ballInitPos.x, ballInitPos.y, ballInitPos.z),
+//       rotate(topologi.ball.x, vec3(1, 0, 0))
+//     ]);
+//   }
+
+//   // Inisialisasi ulang node bola
+//   initNodes(ballId);
+// }
+
 
 var legindex = 0;
 var legtrans = 0;
@@ -277,6 +284,7 @@ var changeLeg = 0;
 var direction = 1; // 1 for increasing, -1 for decreasing
 
 function moveLeg() {
+  if (movementMode === "stationary") return;
   if (changeLeg === 0) {
     topologi.leftUpperLeg.x += direction * 6;
     topologi.leftLowerLeg.x -= direction * 6;
@@ -335,10 +343,17 @@ document.getElementById("movement-mode").addEventListener("change", function (e)
   movementMode = e.target.value;
   console.log("Movement mode changed to:", movementMode);
 
+  if (movementMode === "throwBall") {
+    ballThrowing = true; // Start throwing animation
+  } else {
+    ballThrowing = false;
+    throwTime = 0; // Reset throw animation time
+  }
+
   if (movementMode === "stationary") {
     torsoMove = 0;
     topologi.torso.y = 0;
     ballmoveY = -5;
     ballmoveZ = 1.3;
   }
-});  
+});
