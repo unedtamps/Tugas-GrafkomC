@@ -161,6 +161,7 @@ function render() {
   Transformer();
   torsoRotae();
   ballMove();
+  throwBall();
   moveLeg();
   leftArmMoves();
   rightUpperArmMoves();

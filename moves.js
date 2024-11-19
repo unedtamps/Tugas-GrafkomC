@@ -3,6 +3,10 @@ var maxLowerLegPos = 285;
 var minUpperLegPos = 180;
 var minLowerLegPos = 0;
 var movementMode = "stationary"; // Default mode: stationary
+var ballThrowing = false; // Status lemparan
+var throwTime = 0;        // Waktu untuk animasi parabola
+var ballInitPos = { x: 4, y: -5, z: 1.3 }; // Posisi awal bola
+
 
 
 var topologi = {
@@ -231,6 +235,40 @@ function ballMove() {
   initNodes(ballId);
 }
 
+function throwBall() {
+  if (!ballThrowing) return;
+
+  // Hitung gerakan parabola
+  throwTime += 0.05; // Kecepatan waktu
+  let gravity = -9.8;
+  let initialVelocity = 15;
+  let angle = Math.PI / 4; // Sudut 45 derajat
+
+  let throwX = ballInitPos.x + initialVelocity * Math.cos(angle) * throwTime;
+  let throwY =
+    ballInitPos.y +
+    initialVelocity * Math.sin(angle) * throwTime +
+    0.5 * gravity * throwTime * throwTime;
+  let throwZ = ballInitPos.z + 10 * throwTime; // Gerakan ke depan
+
+  // Update posisi bola
+  if (throwY >= ballInitPos.y) {
+    moves.ball = multAll([
+      translate(throwX, throwY, throwZ),
+      rotate(topologi.ball.x, vec3(1, 0, 0)),
+    ]);
+  } else {
+    // Reset posisi bola setelah lemparan selesai
+    ballThrowing = false;
+    throwTime = 0;
+    moves.ball = multAll([
+      translate(ballInitPos.x, ballInitPos.y, ballInitPos.z),
+      rotate(topologi.ball.x, vec3(1, 0, 0)),
+    ]);
+  }
+
+  initNodes(ballId);
+}
 
 var legindex = 0;
 var legtrans = 0;
@@ -287,20 +325,20 @@ function moveLeg() {
     ]);
   }
 
-  document.getElementById("movement-mode").addEventListener("change", function (e) {
-    movementMode = e.target.value;
-    console.log("Movement mode changed to:", movementMode);
-  
-    if (movementMode === "stationary") {
-      torsoMove = 0;
-      topologi.torso.y = 0;
-      ballmoveY = -5;
-      ballmoveZ = 1.3;
-    }
-  });  
-
   initNodes(leftUpperLegId);
   initNodes(leftLowerLegId);
   initNodes(rightUpperLegId);
   initNodes(rightLowerLegId);
 }
+
+document.getElementById("movement-mode").addEventListener("change", function (e) {
+  movementMode = e.target.value;
+  console.log("Movement mode changed to:", movementMode);
+
+  if (movementMode === "stationary") {
+    torsoMove = 0;
+    topologi.torso.y = 0;
+    ballmoveY = -5;
+    ballmoveZ = 1.3;
+  }
+});  
